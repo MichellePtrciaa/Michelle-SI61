@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_daftar_karyawan/models/karyawan.dart';
+
+import 'models/karyawan.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
       home: const MyHomePage(),
     );
   }
@@ -37,26 +42,30 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 225, 226, 166),
-
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text("Daftar Karyawan"),
       ),
       body: FutureBuilder<List<Karyawan>>(
         future: _readJsonData(),
         builder: (context, snapshot) {
-          //print('data =' +snapshot.hasData.toString())'
+          //print('data =' + snapshot.hasData.toString());
           if (snapshot.hasData) {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(snapshot.data![index].nama),
+                  title: Text(
+                    snapshot.data![index].nama,
+                  ), // untuk menampilkan nama
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Umur: ${snapshot.data![index].umur}'),
+                      Text('Umur : ${snapshot.data![index].umur}'),
                       Text(
-                        'Alamat: ${snapshot.data![index].alamat.jalan}, ${snapshot.data![index].alamat.kota}, ${snapshot.data![index].alamat.provinsi}',
+                        'Hobi : ${snapshot.data![index].hobi}',
+                      ), //untuk menampilkan umur
+                      Text(
+                        'Alamat : ${snapshot.data![index].alamat.jalan} , ${snapshot.data![index].alamat.kota} , ${snapshot.data![index].alamat.provinsi}',
                       ),
                     ],
                   ),
